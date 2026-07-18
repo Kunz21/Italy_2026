@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>FerienKasse 🌴</title>
+<title>Ferien Kasse 🌴</title>
 <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -752,34 +752,58 @@
     const { balances, paid, share } = calcBalances();
     const transactions = calcSettlements(balances);
     const totalSpent  = expList.reduce((s, e) => s + Number(e.amount), 0);
-    const avgPerPerson = totalSpent / userList.length;
+
+    // Gesamtanteil aller Beteiligungen (Summe aller share-Werte)
+    const totalShare = Object.values(share).reduce((s, v) => s + v, 0);
 
     let html = `<div class="card">
       <div class="stat-row"><span class="stat-label">💰 Gesamtausgaben</span><span class="stat-value">CHF ${totalSpent.toFixed(2)}</span></div>
-      <div class="stat-row"><span class="stat-label">👥 Personen</span><span class="stat-value">${userList.length}</span></div>
-      <div class="stat-row"><span class="stat-label">📋 Ausgaben</span><span class="stat-value">${expList.length}</span></div>
-      <div class="stat-row"><span class="stat-label">⚖️ Gleicher Anteil / Person</span><span class="stat-value">CHF ${avgPerPerson.toFixed(2)}</span></div>
+      <div class="stat-row"><span class="stat-label">👥 Personen in Gruppe</span><span class="stat-value">${userList.length}</span></div>
+      <div class="stat-row"><span class="stat-label">📋 Anzahl Ausgaben</span><span class="stat-value">${expList.length}</span></div>
     </div>`;
 
     html += `<h3 style="font-weight:700;margin:20px 0 10px;font-size:1rem;">📋 Personen-Bilanz</h3><div class="card">`;
-    const maxP = Math.max(...userList.map(([id]) => paid[id]), 1);
+
+    // Balken: relativ zum grössten share-Wert unter allen Personen
+    const maxShare = Math.max(...userList.map(([id]) => share[id]), 1);
+
     userList.forEach(([id, u]) => {
-      const b   = balances[id];
-      const cls = b > 0.005 ? 'pb-pos' : b < -0.005 ? 'pb-neg' : 'pb-zero';
+      const b    = balances[id];
+      const cls  = b > 0.005 ? 'pb-pos' : b < -0.005 ? 'pb-neg' : 'pb-zero';
       const sign = b > 0.005 ? '+' : '';
-      const pct = Math.min((paid[id] / maxP) * 100, 100);
+
+      // Anteil in % an den Gesamtausgaben
+      const sharePct = totalShare > 0 ? (share[id] / totalShare * 100).toFixed(1) : '0.0';
+      // Balken relativ zum höchsten Einzelanteil
+      const barPct   = Math.min((share[id] / maxShare) * 100, 100);
+
       html += `<div class="person-balance">
         <div class="pb-name"><span class="pb-avatar">${u.avatarEmoji}</span>${u.name}</div>
         <div style="flex:1;margin:0 12px">
-          <div class="pb-paid">Bezahlt: CHF ${paid[id].toFixed(2)} · Anteil: CHF ${share[id].toFixed(2)}</div>
+          <div class="pb-paid" style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px;">
+            <span>💳 Bezahlt: <strong>CHF ${paid[id].toFixed(2)}</strong></span>
+            <span>📊 Anteil: <strong>CHF ${share[id].toFixed(2)}</strong> <span style="color:var(--teal);font-weight:700">(${sharePct}%)</span></span>
+          </div>
           <div class="balance-bar-wrap">
-            <div class="balance-bar-bg"><div class="balance-bar-fill" style="width:${pct}%;background:${b>0?'var(--green)':b<0?'var(--coral)':'var(--gray)'}"></div></div>
+            <div class="balance-bar-bg">
+              <div class="balance-bar-fill" style="width:${barPct}%;background:${b>0?'var(--green)':b<0?'var(--coral)':'var(--gray)'}"></div>
+            </div>
           </div>
         </div>
         <div class="pb-balance ${cls}">${sign}CHF ${Math.abs(b).toFixed(2)}</div>
       </div>`;
     });
     html += '</div>';
+
+    // Legende
+    html += `<div class="card" style="font-size:0.78rem;color:var(--gray);line-height:1.7">
+      <strong style="color:var(--blue);display:block;margin-bottom:4px">ℹ️ So wird gerechnet</strong>
+      Jede Person trägt nur den Anteil der Ausgaben, bei denen sie als <em>betroffen</em> markiert war.
+      Der Balken zeigt den Anteil relativ zur Person mit dem höchsten Einzelanteil.
+      <br/><span style="color:var(--green)">■</span> = bekommt Geld zurück &nbsp;
+      <span style="color:var(--coral)">■</span> = schuldet noch Geld &nbsp;
+      <span style="color:var(--gray)">■</span> = ausgeglichen
+    </div>`;
 
     html += `<h3 style="font-weight:700;margin:20px 0 10px;font-size:1rem;">💸 Wer zahlt wem?</h3>`;
     if (transactions.length === 0) {
