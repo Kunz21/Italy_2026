@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>FerienKasse 🌴</title>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --blue: #1A3C5E;
+    --yellow: #F5C842;
+    --sand: #FDF6E3;
+    --coral: #FF6B6B;
+    --teal: #2ABFBF;
+    --white: #FFFFFF;
+    --gray: #6B7280;
+    --light: #F0F4F8;
+    --green: #22C55E;
+    --red: #EF4444;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--sand);
+    min-height: 100vh;
+    color: var(--blue);
+  }
+
+  /* HEADER */
+  header {
+    background: var(--blue);
+    padding: 20px 24px 0;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  header h1 {
+    font-family: 'Pacifico', cursive;
+    font-size: 2.2rem;
+    color: var(--yellow);
+    letter-spacing: 1px;
+    position: relative;
+    z-index: 2;
+  }
+  header p.subtitle {
+    color: #A8C6E8;
+    font-size: 0.85rem;
+    margin-top: 4px;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* WAVE SVG */
+  .wave-divider {
+    display: block;
+    width: 100%;
+    margin-top: 16px;
+    line-height: 0;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* TABS */
+  .tabs {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    padding: 20px 16px 0;
+    background: var(--sand);
+  }
+  .tab-btn {
+    padding: 10px 22px;
+    border-radius: 50px;
+    border: 2px solid var(--blue);
+    background: transparent;
+    color: var(--blue);
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 0.88rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .tab-btn.active, .tab-btn:hover {
+    background: var(--blue);
+    color: var(--yellow);
+  }
+
+  /* MAIN CONTENT */
+  main {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 24px 16px 80px;
+  }
+
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* SECTION TITLES */
+  .section-title {
+    font-family: 'Pacifico', cursive;
+    font-size: 1.4rem;
+    color: var(--blue);
+    margin-bottom: 16px;
+  }
+
+  /* CARDS */
+  .card {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 2px 12px rgba(26,60,94,0.08);
+    margin-bottom: 16px;
+  }
+
+  /* AVATAR GRID */
+  .avatar-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    margin: 12px 0;
+  }
+  .avatar-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    padding: 6px 4px;
+    border-radius: 12px;
+    border: 2px solid transparent;
+    transition: all 0.15s;
+    background: var(--light);
+  }
+  .avatar-option:hover { border-color: var(--teal); background: #E0F7F7; }
+  .avatar-option.selected { border-color: var(--yellow); background: #FFF8E1; box-shadow: 0 0 0 2px var(--blue); }
+  .avatar-option .emoji { font-size: 1.8rem; }
+  .avatar-option .label { font-size: 0.6rem; color: var(--gray); margin-top: 3px; text-align: center; }
+
+  /* FORM ELEMENTS */
+  label { font-size: 0.85rem; font-weight: 600; color: var(--blue); display: block; margin-bottom: 5px; }
+  input[type="text"], input[type="number"], select, textarea {
+    width: 100%;
+    padding: 10px 14px;
+    border: 2px solid #D1DCE8;
+    border-radius: 10px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    color: var(--blue);
+    background: var(--light);
+    outline: none;
+    transition: border-color 0.2s;
+    margin-bottom: 14px;
+  }
+  input:focus, select:focus, textarea:focus { border-color: var(--teal); background: #fff; }
+  textarea { resize: vertical; min-height: 70px; }
+
+  .btn {
+    padding: 11px 24px;
+    border-radius: 50px;
+    border: none;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-primary { background: var(--blue); color: var(--yellow); }
+  .btn-primary:hover { background: #0f2840; transform: translateY(-1px); }
+  .btn-coral { background: var(--coral); color: white; }
+  .btn-coral:hover { background: #e05555; }
+  .btn-sm { padding: 6px 14px; font-size: 0.78rem; }
+
+  /* USER LIST */
+  .user-list { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 16px; }
+  .user-chip {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--light);
+    border: 2px solid #D1DCE8;
+    border-radius: 50px;
+    padding: 6px 14px 6px 6px;
+    font-weight: 600;
+    font-size: 0.85rem;
+  }
+  .user-chip .chip-avatar { font-size: 1.4rem; }
+  .user-chip .chip-delete {
+    margin-left: 6px;
+    color: var(--coral);
+    cursor: pointer;
+    font-size: 1rem;
+    line-height: 1;
+    font-weight: 700;
+  }
+
+  /* EXPENSE LIST */
+  .expense-card {
+    background: var(--white);
+    border-radius: 14px;
+    padding: 16px;
+    box-shadow: 0 2px 10px rgba(26,60,94,0.07);
+    margin-bottom: 12px;
+    border-left: 5px solid var(--teal);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .expense-header { display: flex; justify-content: space-between; align-items: flex-start; }
+  .expense-title { font-weight: 700; font-size: 1rem; color: var(--blue); }
+  .expense-amount { font-family: 'Pacifico', cursive; font-size: 1.1rem; color: var(--coral); white-space: nowrap; }
+  .expense-meta { font-size: 0.78rem; color: var(--gray); }
+  .expense-participants { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 4px; }
+  .participant-badge {
+    background: var(--light);
+    border-radius: 20px;
+    padding: 2px 10px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--blue);
+    display: flex; align-items: center; gap: 3px;
+  }
+
+  /* CHECKBOXES */
+  .checkbox-group { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+  .checkbox-item {
+    display: flex; align-items: center; gap: 6px;
+    background: var(--light);
+    border: 2px solid #D1DCE8;
+    border-radius: 8px;
+    padding: 6px 12px;
+    cursor: pointer;
+    font-size: 0.82rem; font-weight: 600;
+    transition: all 0.15s;
+    user-select: none;
+  }
+  .checkbox-item input { display: none; }
+  .checkbox-item.checked { border-color: var(--teal); background: #E0F7F7; color: var(--blue); }
+  .checkbox-item .cb-avatar { font-size: 1.1rem; }
+
+  /* SETTLEMENT */
+  .settlement-card {
+    background: var(--white);
+    border-radius: 14px;
+    padding: 18px;
+    box-shadow: 0 2px 10px rgba(26,60,94,0.07);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .settlement-card .arrow { font-size: 1.4rem; flex-shrink: 0; }
+  .settlement-card .s-amount {
+    font-family: 'Pacifico', cursive;
+    font-size: 1.2rem;
+    color: var(--coral);
+    margin-left: auto;
+    white-space: nowrap;
+  }
+  .settlement-names { font-size: 0.9rem; font-weight: 600; color: var(--blue); }
+  .settlement-names span { color: var(--gray); font-weight: 400; }
+
+  .stat-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--light); }
+  .stat-row:last-child { border-bottom: none; }
+  .stat-label { font-size: 0.85rem; color: var(--gray); }
+  .stat-value { font-weight: 700; font-size: 1rem; }
+
+  .balance-bar-wrap { margin: 8px 0 4px; }
+  .balance-bar-bg { background: var(--light); border-radius: 20px; height: 10px; overflow: hidden; }
+  .balance-bar-fill { height: 100%; border-radius: 20px; transition: width 0.5s; }
+
+  .person-balance {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 12px 0; border-bottom: 1px solid var(--light);
+    gap: 10px;
+  }
+  .person-balance:last-child { border-bottom: none; }
+  .pb-name { display: flex; align-items: center; gap: 8px; font-weight: 600; }
+  .pb-avatar { font-size: 1.4rem; }
+  .pb-paid { font-size: 0.78rem; color: var(--gray); }
+  .pb-balance { font-weight: 700; font-size: 0.95rem; }
+  .pb-pos { color: var(--green); }
+  .pb-neg { color: var(--red); }
+  .pb-zero { color: var(--gray); }
+
+  .empty-state { text-align: center; padding: 40px 20px; color: var(--gray); }
+  .empty-state .es-icon { font-size: 3rem; margin-bottom: 10px; }
+  .empty-state p { font-size: 0.9rem; }
+
+  /* TOAST */
+  #toast {
+    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(100px);
+    background: var(--blue); color: var(--yellow);
+    padding: 12px 28px; border-radius: 50px;
+    font-weight: 600; font-size: 0.9rem;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    z-index: 999; pointer-events: none; white-space: nowrap;
+  }
+  #toast.show { transform: translateX(-50%) translateY(0); }
+
+  /* MODAL */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.45); z-index: 500;
+    align-items: center; justify-content: center; padding: 16px;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--white); border-radius: 20px;
+    padding: 28px; width: 100%; max-width: 480px;
+    max-height: 90vh; overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+    animation: modalIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  @keyframes modalIn { from { transform: scale(0.85); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+  .modal-title { font-family: 'Pacifico', cursive; font-size: 1.3rem; margin-bottom: 20px; }
+  .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 8px; }
+
+  @media (max-width: 480px) {
+    header h1 { font-size: 1.6rem; }
+    .avatar-grid { grid-template-columns: repeat(4, 1fr); }
+    .tab-btn { padding: 8px 14px; font-size: 0.8rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🌴 FerienKasse</h1>
+  <p class="subtitle">Gemeinsam reisen, fair abrechnen</p>
+  <svg class="wave-divider" viewBox="0 0 900 48" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,28 C150,56 300,0 450,28 C600,56 750,0 900,28 L900,48 L0,48 Z" fill="#FDF6E3"/>
+  </svg>
+</header>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('gruppe')">👥 Gruppe</button>
+  <button class="tab-btn" onclick="switchTab('ausgaben')">🧾 Ausgaben</button>
+  <button class="tab-btn" onclick="switchTab('abrechnung')">📊 Abrechnung</button>
+</div>
+
+<main>
+
+  <!-- TAB: GRUPPE -->
+  <div id="tab-gruppe" class="tab-panel active">
+    <h2 class="section-title">Deine Reisegruppe</h2>
+
+    <div class="card">
+      <label>Reise-Titel</label>
+      <input type="text" id="tripTitle" placeholder="z.B. Sommerurlaub Kroatien 2026" oninput="updateTripTitle()"/>
+
+      <div id="userList" class="user-list"></div>
+      <button class="btn btn-primary" onclick="openAddUser()">＋ Person hinzufügen</button>
+    </div>
+  </div>
+
+  <!-- TAB: AUSGABEN -->
+  <div id="tab-ausgaben" class="tab-panel">
+    <h2 class="section-title">Ausgaben</h2>
+
+    <div class="card">
+      <button class="btn btn-primary" style="width:100%" onclick="openAddExpense()">＋ Ausgabe eintragen</button>
+    </div>
+
+    <div id="expenseList"></div>
+  </div>
+
+  <!-- TAB: ABRECHNUNG -->
+  <div id="tab-abrechnung" class="tab-panel">
+    <h2 class="section-title">Abrechnung</h2>
+    <div id="settlementContent"></div>
+  </div>
+
+</main>
+
+<!-- MODAL: User hinzufügen -->
+<div class="modal-overlay" id="modalUser">
+  <div class="modal">
+    <div class="modal-title">✨ Person anlegen</div>
+
+    <label>Name</label>
+    <input type="text" id="newUserName" placeholder="z.B. Anna" maxlength="20"/>
+
+    <label>Avatar auswählen</label>
+    <div class="avatar-grid" id="avatarGrid"></div>
+
+    <div class="modal-actions">
+      <button class="btn btn-sm" onclick="closeModal('modalUser')" style="background:var(--light);color:var(--blue)">Abbrechen</button>
+      <button class="btn btn-primary btn-sm" onclick="addUser()">Person anlegen</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Ausgabe eintragen -->
+<div class="modal-overlay" id="modalExpense">
+  <div class="modal">
+    <div class="modal-title">💸 Ausgabe eintragen</div>
+
+    <label>Beschreibung</label>
+    <input type="text" id="expTitle" placeholder="z.B. Abendessen am Strand"/>
+
+    <label>Betrag (CHF)</label>
+    <input type="number" id="expAmount" placeholder="0.00" min="0" step="0.01"/>
+
+    <label>Bezahlt von</label>
+    <select id="expPayer"></select>
+
+    <label>Betroffen (wer teilt die Kosten?)</label>
+    <div class="checkbox-group" id="expParticipants"></div>
+
+    <div style="display:flex;gap:8px;margin-bottom:14px;">
+      <button class="btn btn-sm" style="background:var(--light);color:var(--blue)" onclick="selectAllParticipants()">Alle</button>
+      <button class="btn btn-sm" style="background:var(--light);color:var(--blue)" onclick="clearAllParticipants()">Keine</button>
+    </div>
+
+    <label>Kategorie</label>
+    <select id="expCategory">
+      <option value="🍽️ Essen & Trinken">🍽️ Essen & Trinken</option>
+      <option value="🏨 Unterkunft">🏨 Unterkunft</option>
+      <option value="🚗 Transport">🚗 Transport</option>
+      <option value="🎡 Aktivitäten">🎡 Aktivitäten</option>
+      <option value="🛒 Einkaufen">🛒 Einkaufen</option>
+      <option value="🎁 Sonstiges">🎁 Sonstiges</option>
+    </select>
+
+    <label>Datum</label>
+    <input type="text" id="expDate" placeholder="z.B. 17.07.2026"/>
+
+    <div class="modal-actions">
+      <button class="btn btn-sm" onclick="closeModal('modalExpense')" style="background:var(--light);color:var(--blue)">Abbrechen</button>
+      <button class="btn btn-primary btn-sm" onclick="addExpense()">Eintragen</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+  // ─── AVATARE ───────────────────────────────────────────────
+  const AVATARS = [
+    { emoji: '🦄', label: 'Einhorn' },
+    { emoji: '🐙', label: 'Oktopus' },
+    { emoji: '🦊', label: 'Fuchs' },
+    { emoji: '🐻‍❄️', label: 'Eisbär' },
+    { emoji: '🦩', label: 'Flamingo' },
+    { emoji: '🐉', label: 'Drache' },
+    { emoji: '🦋', label: 'Schmetterl.' },
+    { emoji: '🐧', label: 'Pinguin' },
+    { emoji: '🦁', label: 'Löwe' },
+    { emoji: '🐸', label: 'Frosch' },
+    { emoji: '🦀', label: 'Krabbe' },
+    { emoji: '🐺', label: 'Wolf' },
+    { emoji: '🦚', label: 'Pfau' },
+    { emoji: '🐼', label: 'Panda' },
+    { emoji: '🦝', label: 'Waschbär' },
+    { emoji: '🐳', label: 'Wal' },
+    { emoji: '🦜', label: 'Papagei' },
+    { emoji: '🐨', label: 'Koala' },
+    { emoji: '🦭', label: 'Robbe' },
+    { emoji: '🦖', label: 'Dino' },
+    { emoji: '🐬', label: 'Delphin' },
+    { emoji: '🦦', label: 'Otter' },
+  ];
+
+  // ─── STATE ────────────────────────────────────────────────
+  let users = [];
+  let expenses = [];
+  let selectedAvatar = AVATARS[0];
+
+  // ─── INIT ─────────────────────────────────────────────────
+  function init() {
+    // Avatar Grid aufbauen
+    const grid = document.getElementById('avatarGrid');
+    AVATARS.forEach((av, i) => {
+      const el = document.createElement('div');
+      el.className = 'avatar-option' + (i === 0 ? ' selected' : '');
+      el.innerHTML = `<span class="emoji">${av.emoji}</span><span class="label">${av.label}</span>`;
+      el.onclick = () => selectAvatar(i, el);
+      grid.appendChild(el);
+    });
+
+    // Datum vorbelegen
+    const today = new Date();
+    document.getElementById('expDate').value =
+      String(today.getDate()).padStart(2,'0') + '.' +
+      String(today.getMonth()+1).padStart(2,'0') + '.' +
+      today.getFullYear();
+
+    // Demo-Daten
+    users = [
+      { id: uid(), name: 'Patrik', avatar: AVATARS[5] },
+      { id: uid(), name: 'Anna', avatar: AVATARS[4] },
+      { id: uid(), name: 'Leo', avatar: AVATARS[3] },
+    ];
+    expenses = [];
+    renderAll();
+  }
+
+  function uid() { return Math.random().toString(36).slice(2, 9); }
+
+  // ─── TABS ─────────────────────────────────────────────────
+  function switchTab(tab) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + tab).classList.add('active');
+    document.querySelectorAll('.tab-btn').forEach(b => {
+      if (b.textContent.toLowerCase().includes(tab === 'gruppe' ? '👥' : tab === 'ausgaben' ? '🧾' : '📊'))
+        b.classList.add('active');
+    });
+    if (tab === 'abrechnung') renderSettlement();
+  }
+
+  // ─── USER MANAGEMENT ──────────────────────────────────────
+  function openAddUser() {
+    document.getElementById('newUserName').value = '';
+    selectedAvatar = AVATARS[0];
+    document.querySelectorAll('.avatar-option').forEach((el, i) => {
+      el.classList.toggle('selected', i === 0);
+    });
+    openModal('modalUser');
+    setTimeout(() => document.getElementById('newUserName').focus(), 200);
+  }
+
+  function selectAvatar(i, el) {
+    selectedAvatar = AVATARS[i];
+    document.querySelectorAll('.avatar-option').forEach(e => e.classList.remove('selected'));
+    el.classList.add('selected');
+  }
+
+  function addUser() {
+    const name = document.getElementById('newUserName').value.trim();
+    if (!name) { showToast('⚠️ Bitte einen Namen eingeben!'); return; }
+    if (users.find(u => u.name.toLowerCase() === name.toLowerCase())) {
+      showToast('⚠️ Dieser Name existiert bereits!'); return;
+    }
+    users.push({ id: uid(), name, avatar: selectedAvatar });
+    closeModal('modalUser');
+    renderAll();
+    showToast(`${selectedAvatar.emoji} ${name} ist dabei!`);
+  }
+
+  function removeUser(id) {
+    const user = users.find(u => u.id === id);
+    const inExpense = expenses.some(e => e.payerId === id || e.participants.includes(id));
+    if (inExpense) { showToast('⚠️ Person hat Ausgaben – erst entfernen!'); return; }
+    users = users.filter(u => u.id !== id);
+    renderAll();
+    showToast(`${user.name} wurde entfernt.`);
+  }
+
+  function renderUserList() {
+    const ul = document.getElementById('userList');
+    ul.innerHTML = '';
+    if (users.length === 0) {
+      ul.innerHTML = '<p style="color:var(--gray);font-size:0.85rem;margin-bottom:12px">Noch niemand dabei — füge Personen hinzu!</p>';
+      return;
+    }
+    users.forEach(u => {
+      const chip = document.createElement('div');
+      chip.className = 'user-chip';
+      chip.innerHTML = `<span class="chip-avatar">${u.avatar.emoji}</span>${u.name}<span class="chip-delete" onclick="removeUser('${u.id}')" title="Entfernen">×</span>`;
+      ul.appendChild(chip);
+    });
+  }
+
+  // ─── EXPENSE MANAGEMENT ───────────────────────────────────
+  function openAddExpense() {
+    if (users.length < 2) { showToast('⚠️ Mindestens 2 Personen anlegen!'); return; }
+    // Payer Dropdown befüllen
+    const sel = document.getElementById('expPayer');
+    sel.innerHTML = users.map(u => `<option value="${u.id}">${u.avatar.emoji} ${u.name}</option>`).join('');
+
+    // Participants Checkboxes
+    buildParticipantCheckboxes();
+    document.getElementById('expTitle').value = '';
+    document.getElementById('expAmount').value = '';
+    openModal('modalExpense');
+    setTimeout(() => document.getElementById('expTitle').focus(), 200);
+  }
+
+  function buildParticipantCheckboxes() {
+    const cg = document.getElementById('expParticipants');
+    cg.innerHTML = '';
+    users.forEach(u => {
+      const item = document.createElement('label');
+      item.className = 'checkbox-item checked';
+      item.innerHTML = `<input type="checkbox" value="${u.id}" checked/><span class="cb-avatar">${u.avatar.emoji}</span>${u.name}`;
+      item.querySelector('input').addEventListener('change', e => {
+        item.classList.toggle('checked', e.target.checked);
+      });
+      cg.appendChild(item);
+    });
+  }
+
+  function selectAllParticipants() {
+    document.querySelectorAll('#expParticipants input').forEach(cb => {
+      cb.checked = true;
+      cb.closest('.checkbox-item').classList.add('checked');
+    });
+  }
+
+  function clearAllParticipants() {
+    document.querySelectorAll('#expParticipants input').forEach(cb => {
+      cb.checked = false;
+      cb.closest('.checkbox-item').classList.remove('checked');
+    });
+  }
+
+  function addExpense() {
+    const title = document.getElementById('expTitle').value.trim();
+    const amount = parseFloat(document.getElementById('expAmount').value);
+    const payerId = document.getElementById('expPayer').value;
+    const category = document.getElementById('expCategory').value;
+    const date = document.getElementById('expDate').value;
+
+    if (!title) { showToast('⚠️ Bitte eine Beschreibung eingeben!'); return; }
+    if (!amount || amount <= 0) { showToast('⚠️ Bitte einen gültigen Betrag eingeben!'); return; }
+
+    const participants = Array.from(document.querySelectorAll('#expParticipants input:checked')).map(cb => cb.value);
+    if (participants.length === 0) { showToast('⚠️ Mindestens eine Person auswählen!'); return; }
+
+    expenses.push({ id: uid(), title, amount, payerId, participants, category, date });
+    closeModal('modalExpense');
+    renderAll();
+    showToast(`✅ "${title}" eingetragen!`);
+  }
+
+  function removeExpense(id) {
+    expenses = expenses.filter(e => e.id !== id);
+    renderAll();
+    showToast('🗑️ Ausgabe gelöscht.');
+  }
+
+  function renderExpenseList() {
+    const el = document.getElementById('expenseList');
+    if (expenses.length === 0) {
+      el.innerHTML = `<div class="empty-state"><div class="es-icon">🧾</div><p>Noch keine Ausgaben.<br/>Tippe auf <strong>＋ Ausgabe eintragen</strong>!</p></div>`;
+      return;
+    }
+    const sorted = [...expenses].sort((a,b) => b.id.localeCompare(a.id));
+    el.innerHTML = sorted.map(exp => {
+      const payer = users.find(u => u.id === exp.payerId);
+      const parts = exp.participants.map(pid => users.find(u => u.id === pid)).filter(Boolean);
+      const perPerson = (exp.amount / exp.participants.length).toFixed(2);
+      return `
+        <div class="expense-card">
+          <div class="expense-header">
+            <div>
+              <div class="expense-title">${exp.category} ${exp.title}</div>
+              <div class="expense-meta">${exp.date ? exp.date + ' · ' : ''}Bezahlt von ${payer ? payer.avatar.emoji + ' ' + payer.name : '?'} · CHF ${perPerson} / Person</div>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
+              <div class="expense-amount">CHF ${exp.amount.toFixed(2)}</div>
+              <button class="btn btn-sm" onclick="removeExpense('${exp.id}')" style="background:var(--light);color:var(--coral);padding:4px 10px;">🗑️</button>
+            </div>
+          </div>
+          <div class="expense-participants">
+            ${parts.map(p => `<span class="participant-badge">${p.avatar.emoji} ${p.name}</span>`).join('')}
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  // ─── SETTLEMENT ───────────────────────────────────────────
+  function calcBalances() {
+    // balances[userId] = was sie bekommen (positiv) oder schulden (negativ)
+    const paid = {};
+    const share = {};
+    users.forEach(u => { paid[u.id] = 0; share[u.id] = 0; });
+
+    expenses.forEach(exp => {
+      if (paid[exp.payerId] !== undefined) paid[exp.payerId] += exp.amount;
+      const perPerson = exp.amount / exp.participants.length;
+      exp.participants.forEach(pid => {
+        if (share[pid] !== undefined) share[pid] += perPerson;
+      });
+    });
+
+    const balances = {};
+    users.forEach(u => { balances[u.id] = paid[u.id] - share[u.id]; });
+    return { balances, paid, share };
+  }
+
+  function calcSettlements(balances) {
+    // Schulden minimieren mit Greedy
+    const pos = [], neg = [];
+    users.forEach(u => {
+      const b = balances[u.id];
+      if (b > 0.005) pos.push({ id: u.id, amt: b });
+      else if (b < -0.005) neg.push({ id: u.id, amt: -b });
+    });
+    pos.sort((a,b) => b.amt - a.amt);
+    neg.sort((a,b) => b.amt - a.amt);
+
+    const transactions = [];
+    let pi = 0, ni = 0;
+    while (pi < pos.length && ni < neg.length) {
+      const transfer = Math.min(pos[pi].amt, neg[ni].amt);
+      transactions.push({ from: neg[ni].id, to: pos[pi].id, amount: transfer });
+      pos[pi].amt -= transfer;
+      neg[ni].amt -= transfer;
+      if (pos[pi].amt < 0.005) pi++;
+      if (neg[ni].amt < 0.005) ni++;
+    }
+    return transactions;
+  }
+
+  function renderSettlement() {
+    const el = document.getElementById('settlementContent');
+
+    if (users.length === 0 || expenses.length === 0) {
+      el.innerHTML = `<div class="empty-state"><div class="es-icon">📊</div><p>Trage zuerst Personen und Ausgaben ein.</p></div>`;
+      return;
+    }
+
+    const { balances, paid, share } = calcBalances();
+    const transactions = calcSettlements(balances);
+    const totalSpent = expenses.reduce((s, e) => s + e.amount, 0);
+    const avgPerPerson = totalSpent / users.length;
+
+    // Statistiken
+    let html = `<div class="card">
+      <div class="stat-row"><span class="stat-label">💰 Gesamtausgaben</span><span class="stat-value">CHF ${totalSpent.toFixed(2)}</span></div>
+      <div class="stat-row"><span class="stat-label">👥 Personen</span><span class="stat-value">${users.length}</span></div>
+      <div class="stat-row"><span class="stat-label">📋 Anzahl Ausgaben</span><span class="stat-value">${expenses.length}</span></div>
+      <div class="stat-row"><span class="stat-label">⚖️ Gleicher Anteil pro Person</span><span class="stat-value">CHF ${avgPerPerson.toFixed(2)}</span></div>
+    </div>`;
+
+    // Personen-Bilanzen
+    html += `<h3 style="font-weight:700;margin:20px 0 10px;font-size:1rem;">📋 Personen-Bilanz</h3><div class="card">`;
+    users.forEach(u => {
+      const b = balances[u.id];
+      const cls = b > 0.005 ? 'pb-pos' : b < -0.005 ? 'pb-neg' : 'pb-zero';
+      const sign = b > 0.005 ? '+' : '';
+      const maxPaid = Math.max(...users.map(u2 => paid[u2.id]), 1);
+      const pct = Math.min((paid[u.id] / maxPaid) * 100, 100);
+      html += `<div class="person-balance">
+        <div class="pb-name"><span class="pb-avatar">${u.avatar.emoji}</span>${u.name}</div>
+        <div style="flex:1;margin:0 12px">
+          <div class="pb-paid">Bezahlt: CHF ${paid[u.id].toFixed(2)} · Anteil: CHF ${share[u.id].toFixed(2)}</div>
+          <div class="balance-bar-wrap">
+            <div class="balance-bar-bg"><div class="balance-bar-fill" style="width:${pct}%;background:${b > 0 ? 'var(--green)' : b < 0 ? 'var(--coral)' : 'var(--gray)'}"></div></div>
+          </div>
+        </div>
+        <div class="pb-balance ${cls}">${sign}CHF ${Math.abs(b).toFixed(2)}</div>
+      </div>`;
+    });
+    html += '</div>';
+
+    // Überweisungen
+    html += `<h3 style="font-weight:700;margin:20px 0 10px;font-size:1rem;">💸 Wer zahlt wem?</h3>`;
+    if (transactions.length === 0) {
+      html += `<div class="card" style="text-align:center;color:var(--gray)">🎉 Alles ausgeglichen! Niemand schuldet etwas.</div>`;
+    } else {
+      transactions.forEach(t => {
+        const from = users.find(u => u.id === t.from);
+        const to = users.find(u => u.id === t.to);
+        if (!from || !to) return;
+        html += `<div class="settlement-card">
+          <span style="font-size:1.5rem">${from.avatar.emoji}</span>
+          <div>
+            <div class="settlement-names"><strong>${from.name}</strong> <span>zahlt an</span> <strong>${to.name}</strong></div>
+          </div>
+          <span style="font-size:1.5rem">${to.avatar.emoji}</span>
+          <div class="s-amount">CHF ${t.amount.toFixed(2)}</div>
+        </div>`;
+      });
+    }
+
+    el.innerHTML = html;
+  }
+
+  // ─── RENDER ALL ───────────────────────────────────────────
+  function renderAll() {
+    renderUserList();
+    renderExpenseList();
+  }
+
+  // ─── HELPERS ──────────────────────────────────────────────
+  function updateTripTitle() {
+    const t = document.getElementById('tripTitle').value;
+    document.title = (t ? t + ' · ' : '') + 'FerienKasse 🌴';
+  }
+
+  function openModal(id) { document.getElementById(id).classList.add('open'); }
+  function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+  // Modals schliessen bei Klick aufs Overlay
+  document.querySelectorAll('.modal-overlay').forEach(overlay => {
+    overlay.addEventListener('click', e => {
+      if (e.target === overlay) overlay.classList.remove('open');
+    });
+  });
+
+  let toastTimer;
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('show'), 2800);
+  }
+
+  init();
+</script>
+</body>
+</html>
