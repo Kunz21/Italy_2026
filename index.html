@@ -367,7 +367,7 @@
       <option value="🎁 Sonstiges">🎁 Sonstiges</option>
     </select>
     <label>Datum</label>
-    <input type="text" id="expDate" placeholder="z.B. 17.07.2026"/>
+    <input type="date" id="expDate"/>
     <div class="modal-actions">
       <button class="btn btn-sm" onclick="closeModal('modalExpense')" style="background:var(--light);color:var(--blue)">Abbrechen</button>
       <button class="btn btn-primary btn-sm" onclick="addExpense()">Eintragen</button>
@@ -400,7 +400,7 @@
       <option value="🎁 Sonstiges">🎁 Sonstiges</option>
     </select>
     <label>Datum</label>
-    <input type="text" id="editExpDate" placeholder="z.B. 17.07.2026"/>
+    <input type="date" id="editExpDate"/>
     <div class="modal-actions">
       <button class="btn btn-sm" onclick="closeModal('modalEditExpense')" style="background:var(--light);color:var(--blue)">Abbrechen</button>
       <button class="btn btn-primary btn-sm" onclick="saveEditExpense()">Speichern</button>
@@ -507,7 +507,23 @@
     const ol = document.getElementById('loadingOverlay');
     if (!ol.classList.contains('hidden')) ol.classList.add('hidden');
   }
+// ─── DATUM HILFSFUNKTIONEN ────────────────────────────────
+// Heutiges Datum im Format YYYY-MM-DD (für input type="date")
+function todayISO() {
+  const d = new Date();
+  return d.toISOString().slice(0, 10);
+}
 
+// Datum von YYYY-MM-DD → "Sa, 18.07.2026"
+function formatDate(iso) {
+  if (!iso) return '';
+  const d = new Date(iso + 'T00:00:00');
+  const days = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
+  const dd  = String(d.getDate()).padStart(2, '0');
+  const mm  = String(d.getMonth() + 1).padStart(2, '0');
+  const yyyy = d.getFullYear();
+  return `${days[d.getDay()]}, ${dd}.${mm}.${yyyy}`;
+}
   // ─── TABS ─────────────────────────────────────────────────
   window.switchTab = function(tab) {
     document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
@@ -620,10 +636,7 @@
     document.getElementById('expAmount').value = '';
 
     const today = new Date();
-    document.getElementById('expDate').value =
-      String(today.getDate()).padStart(2,'0') + '.' +
-      String(today.getMonth()+1).padStart(2,'0') + '.' +
-      today.getFullYear();
+    document.getElementById('expDate').value = todayISO();
 
     openModal('modalExpense');
     setTimeout(() => document.getElementById('expTitle').focus(), 200);
@@ -703,7 +716,7 @@ window.openEditExpense = function(id) {
   // Felder vorausfüllen
   document.getElementById('editExpTitle').value  = exp.title || '';
   document.getElementById('editExpAmount').value = exp.amount || '';
-  document.getElementById('editExpDate').value   = exp.date || '';
+  document.getElementById('editExpDate').value = exp.date || todayISO();;
 
   // Payer Dropdown
   const sel = document.getElementById('editExpPayer');
@@ -794,7 +807,7 @@ window.saveEditExpense = function() {
           <div class="expense-header">
             <div>
               <div class="expense-title">${exp.category} ${exp.title}</div>
-              <div class="expense-meta">${exp.date ? exp.date + ' · ' : ''}Bezahlt von ${payer ? payer.avatarEmoji + ' ' + payer.name : '?'} · CHF ${perPerson} / Person</div>
+              <div class="expense-meta">${exp.date ? formatDate(exp.date) + ' · ' : ''}Bezahlt von ${payer ? payer.avatarEmoji + ' ' + payer.name : '?'} · CHF ${perPerson} / Person</div>
             </div>
             <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
               <div class="expense-amount">CHF ${Number(exp.amount).toFixed(2)}</div>
