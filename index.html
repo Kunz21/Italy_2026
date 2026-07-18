@@ -325,7 +325,20 @@
     <div id="settlementContent"></div>
   </div>
 </main>
-
+<!-- MODAL: Person bearbeiten -->
+<div class="modal-overlay" id="modalEditUser">
+  <div class="modal">
+    <div class="modal-title">✏️ Person bearbeiten</div>
+    <label>Name</label>
+    <input type="text" id="editUserName" placeholder="z.B. Anna" maxlength="20"/>
+    <label>Avatar auswählen</label>
+    <div class="avatar-grid" id="editAvatarGrid"></div>
+    <div class="modal-actions">
+      <button class="btn btn-sm" onclick="closeModal('modalEditUser')" style="background:var(--light);color:var(--blue)">Abbrechen</button>
+      <button class="btn btn-primary btn-sm" onclick="saveEditUser()">Speichern</button>
+    </div>
+  </div>
+</div>
 <!-- MODAL: User hinzufügen -->
 <div class="modal-overlay" id="modalUser">
   <div class="modal">
@@ -590,7 +603,59 @@ function formatDate(iso) {
       showToast(`${selectedAvatar.emoji} ${name} ist dabei!`);
     }).catch(() => setSyncStatus('error', 'Fehler beim Speichern!'));
   };
+// ─── USER BEARBEITEN ──────────────────────────────────────
+let editingUserId = null;
+let editSelectedAvatar = AVATARS[0];
 
+window.openEditUser = function(id) {
+  const user = users[id];
+  if (!user) return;
+  editingUserId = id;
+
+  document.getElementById('editUserName').value = user.name || '';
+
+  // Avatar-Grid aufbauen und aktuellen vorauswählen
+  const grid = document.getElementById('editAvatarGrid');
+  grid.innerHTML = '';
+  AVATARS.forEach((av, i) => {
+    const isSelected = av.emoji === user.avatarEmoji;
+    if (isSelected) editSelectedAvatar = av;
+    const el = document.createElement('div');
+    el.className = 'avatar-option' + (isSelected ? ' selected' : '');
+    el.innerHTML = `<span class="emoji">${av.emoji}</span><span class="label">${av.label}</span>`;
+    el.onclick = () => {
+      editSelectedAvatar = av;
+      document.querySelectorAll('#editAvatarGrid .avatar-option').forEach(e => e.classList.remove('selected'));
+      el.classList.add('selected');
+    };
+    grid.appendChild(el);
+  });
+
+  openModal('modalEditUser');
+  setTimeout(() => document.getElementById('editUserName').focus(), 200);
+};
+
+window.saveEditUser = function() {
+  const name = document.getElementById('editUserName').value.trim();
+  if (!name) { showToast('⚠️ Bitte einen Namen eingeben!'); return; }
+
+  // Prüfen ob Name bereits vergeben (ausser bei sich selbst)
+  const exists = Object.entries(users).some(([id, u]) =>
+    id !== editingUserId && u.name.toLowerCase() === name.toLowerCase()
+  );
+  if (exists) { showToast('⚠️ Dieser Name existiert bereits!'); return; }
+
+  setSyncStatus('syncing', 'Speichert...');
+  update(ref(db, 'users/' + editingUserId), {
+    name,
+    avatarEmoji: editSelectedAvatar.emoji,
+    avatarLabel: editSelectedAvatar.label,
+  }).then(() => {
+    setSyncStatus('connected', 'Live synchronisiert ✓');
+    closeModal('modalEditUser');
+    showToast(`${editSelectedAvatar.emoji} ${name} aktualisiert!`);
+  }).catch(() => setSyncStatus('error', 'Fehler beim Speichern!'));
+};
   window.removeUser = function(id) {
     const user = users[id];
     const inExpense = Object.values(expenses).some(e =>
@@ -617,7 +682,7 @@ function formatDate(iso) {
     list.forEach(([id, u]) => {
       const chip = document.createElement('div');
       chip.className = 'user-chip';
-      chip.innerHTML = `<span class="chip-avatar">${u.avatarEmoji}</span>${u.name}<span class="chip-delete" onclick="removeUser('${id}')" title="Entfernen">×</span>`;
+      chip.innerHTML = `<span class="chip-avatar">${u.avatarEmoji}</span>${u.name}<span class="chip-edit" onclick="openEditUser('${id}')" title="Bearbeiten" style="margin-left:6px;color:var(--teal);cursor:pointer;font-size:0.9rem;">✏️</span><span class="chip-delete" onclick="removeUser('${id}')" title="Entfernen">×</span>`;
       ul.appendChild(chip);
     });
   }
