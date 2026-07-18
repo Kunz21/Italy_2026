@@ -51,86 +51,65 @@
     position: relative;
     z-index: 2;
   }
-
-  /* WAVE SVG */
   .wave-divider {
-    display: block;
-    width: 100%;
-    margin-top: 16px;
-    line-height: 0;
-    position: relative;
-    z-index: 2;
+    display: block; width: 100%; margin-top: 16px;
+    line-height: 0; position: relative; z-index: 2;
   }
+
+  /* SYNC INDICATOR */
+  #syncStatus {
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+    font-size: 0.75rem; color: #A8C6E8; margin-top: 4px;
+    position: relative; z-index: 2;
+  }
+  #syncDot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--gray); flex-shrink: 0;
+    transition: background 0.3s;
+  }
+  #syncDot.connected { background: var(--green); }
+  #syncDot.syncing { background: var(--yellow); animation: pulse 0.8s infinite; }
+  #syncDot.error { background: var(--coral); }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
 
   /* TABS */
   .tabs {
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-    padding: 20px 16px 0;
-    background: var(--sand);
+    display: flex; justify-content: center; gap: 8px;
+    padding: 20px 16px 0; background: var(--sand);
   }
   .tab-btn {
-    padding: 10px 22px;
-    border-radius: 50px;
-    border: 2px solid var(--blue);
-    background: transparent;
-    color: var(--blue);
-    font-family: 'Inter', sans-serif;
-    font-weight: 600;
-    font-size: 0.88rem;
-    cursor: pointer;
-    transition: all 0.2s;
-    white-space: nowrap;
+    padding: 10px 22px; border-radius: 50px;
+    border: 2px solid var(--blue); background: transparent;
+    color: var(--blue); font-family: 'Inter', sans-serif;
+    font-weight: 600; font-size: 0.88rem; cursor: pointer;
+    transition: all 0.2s; white-space: nowrap;
   }
-  .tab-btn.active, .tab-btn:hover {
-    background: var(--blue);
-    color: var(--yellow);
-  }
+  .tab-btn.active, .tab-btn:hover { background: var(--blue); color: var(--yellow); }
 
-  /* MAIN CONTENT */
-  main {
-    max-width: 680px;
-    margin: 0 auto;
-    padding: 24px 16px 80px;
-  }
-
+  main { max-width: 680px; margin: 0 auto; padding: 24px 16px 80px; }
   .tab-panel { display: none; }
   .tab-panel.active { display: block; }
 
-  /* SECTION TITLES */
   .section-title {
-    font-family: 'Pacifico', cursive;
-    font-size: 1.4rem;
-    color: var(--blue);
-    margin-bottom: 16px;
+    font-family: 'Pacifico', cursive; font-size: 1.4rem;
+    color: var(--blue); margin-bottom: 16px;
   }
 
-  /* CARDS */
   .card {
-    background: var(--white);
-    border-radius: 16px;
-    padding: 20px;
-    box-shadow: 0 2px 12px rgba(26,60,94,0.08);
+    background: var(--white); border-radius: 16px;
+    padding: 20px; box-shadow: 0 2px 12px rgba(26,60,94,0.08);
     margin-bottom: 16px;
   }
 
   /* AVATAR GRID */
   .avatar-grid {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 10px;
-    margin: 12px 0;
+    display: grid; grid-template-columns: repeat(5, 1fr);
+    gap: 10px; margin: 12px 0;
   }
   .avatar-option {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    cursor: pointer;
-    padding: 6px 4px;
-    border-radius: 12px;
-    border: 2px solid transparent;
-    transition: all 0.15s;
+    display: flex; flex-direction: column; align-items: center;
+    cursor: pointer; padding: 6px 4px; border-radius: 12px;
+    border: 2px solid transparent; transition: all 0.15s;
     background: var(--light);
   }
   .avatar-option:hover { border-color: var(--teal); background: #E0F7F7; }
@@ -141,69 +120,39 @@
   /* FORM ELEMENTS */
   label { font-size: 0.85rem; font-weight: 600; color: var(--blue); display: block; margin-bottom: 5px; }
   input[type="text"], input[type="number"], select, textarea {
-    width: 100%;
-    padding: 10px 14px;
-    border: 2px solid #D1DCE8;
-    border-radius: 10px;
-    font-family: 'Inter', sans-serif;
-    font-size: 0.9rem;
-    color: var(--blue);
-    background: var(--light);
-    outline: none;
-    transition: border-color 0.2s;
-    margin-bottom: 14px;
+    width: 100%; padding: 10px 14px; border: 2px solid #D1DCE8;
+    border-radius: 10px; font-family: 'Inter', sans-serif;
+    font-size: 0.9rem; color: var(--blue); background: var(--light);
+    outline: none; transition: border-color 0.2s; margin-bottom: 14px;
   }
   input:focus, select:focus, textarea:focus { border-color: var(--teal); background: #fff; }
-  textarea { resize: vertical; min-height: 70px; }
 
   .btn {
-    padding: 11px 24px;
-    border-radius: 50px;
-    border: none;
-    font-family: 'Inter', sans-serif;
-    font-weight: 700;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: all 0.2s;
+    padding: 11px 24px; border-radius: 50px; border: none;
+    font-family: 'Inter', sans-serif; font-weight: 700;
+    font-size: 0.9rem; cursor: pointer; transition: all 0.2s;
   }
   .btn-primary { background: var(--blue); color: var(--yellow); }
   .btn-primary:hover { background: #0f2840; transform: translateY(-1px); }
-  .btn-coral { background: var(--coral); color: white; }
-  .btn-coral:hover { background: #e05555; }
   .btn-sm { padding: 6px 14px; font-size: 0.78rem; }
 
   /* USER LIST */
   .user-list { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 16px; }
   .user-chip {
     display: flex; align-items: center; gap: 8px;
-    background: var(--light);
-    border: 2px solid #D1DCE8;
-    border-radius: 50px;
-    padding: 6px 14px 6px 6px;
-    font-weight: 600;
-    font-size: 0.85rem;
+    background: var(--light); border: 2px solid #D1DCE8;
+    border-radius: 50px; padding: 6px 14px 6px 6px;
+    font-weight: 600; font-size: 0.85rem;
   }
   .user-chip .chip-avatar { font-size: 1.4rem; }
-  .user-chip .chip-delete {
-    margin-left: 6px;
-    color: var(--coral);
-    cursor: pointer;
-    font-size: 1rem;
-    line-height: 1;
-    font-weight: 700;
-  }
+  .user-chip .chip-delete { margin-left: 6px; color: var(--coral); cursor: pointer; font-size: 1rem; font-weight: 700; }
 
   /* EXPENSE LIST */
   .expense-card {
-    background: var(--white);
-    border-radius: 14px;
-    padding: 16px;
-    box-shadow: 0 2px 10px rgba(26,60,94,0.07);
-    margin-bottom: 12px;
-    border-left: 5px solid var(--teal);
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
+    background: var(--white); border-radius: 14px;
+    padding: 16px; box-shadow: 0 2px 10px rgba(26,60,94,0.07);
+    margin-bottom: 12px; border-left: 5px solid var(--teal);
+    display: flex; flex-direction: column; gap: 6px;
   }
   .expense-header { display: flex; justify-content: space-between; align-items: flex-start; }
   .expense-title { font-weight: 700; font-size: 1rem; color: var(--blue); }
@@ -211,12 +160,8 @@
   .expense-meta { font-size: 0.78rem; color: var(--gray); }
   .expense-participants { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 4px; }
   .participant-badge {
-    background: var(--light);
-    border-radius: 20px;
-    padding: 2px 10px;
-    font-size: 0.72rem;
-    font-weight: 600;
-    color: var(--blue);
+    background: var(--light); border-radius: 20px; padding: 2px 10px;
+    font-size: 0.72rem; font-weight: 600; color: var(--blue);
     display: flex; align-items: center; gap: 3px;
   }
 
@@ -224,37 +169,23 @@
   .checkbox-group { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
   .checkbox-item {
     display: flex; align-items: center; gap: 6px;
-    background: var(--light);
-    border: 2px solid #D1DCE8;
-    border-radius: 8px;
-    padding: 6px 12px;
-    cursor: pointer;
-    font-size: 0.82rem; font-weight: 600;
-    transition: all 0.15s;
-    user-select: none;
+    background: var(--light); border: 2px solid #D1DCE8;
+    border-radius: 8px; padding: 6px 12px; cursor: pointer;
+    font-size: 0.82rem; font-weight: 600; transition: all 0.15s; user-select: none;
   }
   .checkbox-item input { display: none; }
-  .checkbox-item.checked { border-color: var(--teal); background: #E0F7F7; color: var(--blue); }
+  .checkbox-item.checked { border-color: var(--teal); background: #E0F7F7; }
   .checkbox-item .cb-avatar { font-size: 1.1rem; }
 
   /* SETTLEMENT */
   .settlement-card {
-    background: var(--white);
-    border-radius: 14px;
-    padding: 18px;
-    box-shadow: 0 2px 10px rgba(26,60,94,0.07);
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    gap: 14px;
+    background: var(--white); border-radius: 14px; padding: 18px;
+    box-shadow: 0 2px 10px rgba(26,60,94,0.07); margin-bottom: 10px;
+    display: flex; align-items: center; gap: 14px;
   }
-  .settlement-card .arrow { font-size: 1.4rem; flex-shrink: 0; }
   .settlement-card .s-amount {
-    font-family: 'Pacifico', cursive;
-    font-size: 1.2rem;
-    color: var(--coral);
-    margin-left: auto;
-    white-space: nowrap;
+    font-family: 'Pacifico', cursive; font-size: 1.2rem;
+    color: var(--coral); margin-left: auto; white-space: nowrap;
   }
   .settlement-names { font-size: 0.9rem; font-weight: 600; color: var(--blue); }
   .settlement-names span { color: var(--gray); font-weight: 400; }
@@ -270,8 +201,7 @@
 
   .person-balance {
     display: flex; justify-content: space-between; align-items: center;
-    padding: 12px 0; border-bottom: 1px solid var(--light);
-    gap: 10px;
+    padding: 12px 0; border-bottom: 1px solid var(--light); gap: 10px;
   }
   .person-balance:last-child { border-bottom: none; }
   .pb-name { display: flex; align-items: center; gap: 8px; font-weight: 600; }
@@ -288,7 +218,8 @@
 
   /* TOAST */
   #toast {
-    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(100px);
+    position: fixed; bottom: 24px; left: 50%;
+    transform: translateX(-50%) translateY(100px);
     background: var(--blue); color: var(--yellow);
     padding: 12px 28px; border-radius: 50px;
     font-weight: 600; font-size: 0.9rem;
@@ -316,6 +247,23 @@
   .modal-title { font-family: 'Pacifico', cursive; font-size: 1.3rem; margin-bottom: 20px; }
   .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 8px; }
 
+  /* LOADING OVERLAY */
+  #loadingOverlay {
+    position: fixed; inset: 0; background: var(--blue);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    z-index: 9999; transition: opacity 0.5s;
+  }
+  #loadingOverlay.hidden { opacity: 0; pointer-events: none; }
+  #loadingOverlay h2 { font-family: 'Pacifico', cursive; color: var(--yellow); font-size: 2rem; margin-bottom: 12px; }
+  #loadingOverlay p { color: #A8C6E8; font-size: 0.9rem; }
+  .spinner {
+    width: 40px; height: 40px; border: 4px solid rgba(255,255,255,0.2);
+    border-top-color: var(--yellow); border-radius: 50%;
+    animation: spin 0.8s linear infinite; margin-bottom: 16px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
   @media (max-width: 480px) {
     header h1 { font-size: 1.6rem; }
     .avatar-grid { grid-template-columns: repeat(4, 1fr); }
@@ -325,9 +273,20 @@
 </head>
 <body>
 
+<!-- LOADING SCREEN -->
+<div id="loadingOverlay">
+  <h2>🌴 FerienKasse</h2>
+  <div class="spinner"></div>
+  <p>Verbinde mit Firebase...</p>
+</div>
+
 <header>
   <h1>🌴 FerienKasse</h1>
   <p class="subtitle">Gemeinsam reisen, fair abrechnen</p>
+  <div id="syncStatus">
+    <div id="syncDot"></div>
+    <span id="syncText">Verbinde...</span>
+  </div>
   <svg class="wave-divider" viewBox="0 0 900 48" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
     <path d="M0,28 C150,56 300,0 450,28 C600,56 750,0 900,28 L900,48 L0,48 Z" fill="#FDF6E3"/>
   </svg>
@@ -340,15 +299,12 @@
 </div>
 
 <main>
-
   <!-- TAB: GRUPPE -->
   <div id="tab-gruppe" class="tab-panel active">
     <h2 class="section-title">Deine Reisegruppe</h2>
-
     <div class="card">
       <label>Reise-Titel</label>
-      <input type="text" id="tripTitle" placeholder="z.B. Sommerurlaub Kroatien 2026" oninput="updateTripTitle()"/>
-
+      <input type="text" id="tripTitle" placeholder="z.B. Italy 2026" oninput="saveTripTitle()"/>
       <div id="userList" class="user-list"></div>
       <button class="btn btn-primary" onclick="openAddUser()">＋ Person hinzufügen</button>
     </div>
@@ -357,11 +313,9 @@
   <!-- TAB: AUSGABEN -->
   <div id="tab-ausgaben" class="tab-panel">
     <h2 class="section-title">Ausgaben</h2>
-
     <div class="card">
       <button class="btn btn-primary" style="width:100%" onclick="openAddExpense()">＋ Ausgabe eintragen</button>
     </div>
-
     <div id="expenseList"></div>
   </div>
 
@@ -370,20 +324,16 @@
     <h2 class="section-title">Abrechnung</h2>
     <div id="settlementContent"></div>
   </div>
-
 </main>
 
 <!-- MODAL: User hinzufügen -->
 <div class="modal-overlay" id="modalUser">
   <div class="modal">
     <div class="modal-title">✨ Person anlegen</div>
-
     <label>Name</label>
     <input type="text" id="newUserName" placeholder="z.B. Anna" maxlength="20"/>
-
     <label>Avatar auswählen</label>
     <div class="avatar-grid" id="avatarGrid"></div>
-
     <div class="modal-actions">
       <button class="btn btn-sm" onclick="closeModal('modalUser')" style="background:var(--light);color:var(--blue)">Abbrechen</button>
       <button class="btn btn-primary btn-sm" onclick="addUser()">Person anlegen</button>
@@ -395,24 +345,18 @@
 <div class="modal-overlay" id="modalExpense">
   <div class="modal">
     <div class="modal-title">💸 Ausgabe eintragen</div>
-
     <label>Beschreibung</label>
     <input type="text" id="expTitle" placeholder="z.B. Abendessen am Strand"/>
-
     <label>Betrag (CHF)</label>
     <input type="number" id="expAmount" placeholder="0.00" min="0" step="0.01"/>
-
     <label>Bezahlt von</label>
     <select id="expPayer"></select>
-
     <label>Betroffen (wer teilt die Kosten?)</label>
     <div class="checkbox-group" id="expParticipants"></div>
-
     <div style="display:flex;gap:8px;margin-bottom:14px;">
       <button class="btn btn-sm" style="background:var(--light);color:var(--blue)" onclick="selectAllParticipants()">Alle</button>
       <button class="btn btn-sm" style="background:var(--light);color:var(--blue)" onclick="clearAllParticipants()">Keine</button>
     </div>
-
     <label>Kategorie</label>
     <select id="expCategory">
       <option value="🍽️ Essen & Trinken">🍽️ Essen & Trinken</option>
@@ -422,10 +366,8 @@
       <option value="🛒 Einkaufen">🛒 Einkaufen</option>
       <option value="🎁 Sonstiges">🎁 Sonstiges</option>
     </select>
-
     <label>Datum</label>
     <input type="text" id="expDate" placeholder="z.B. 17.07.2026"/>
-
     <div class="modal-actions">
       <button class="btn btn-sm" onclick="closeModal('modalExpense')" style="background:var(--light);color:var(--blue)">Abbrechen</button>
       <button class="btn btn-primary btn-sm" onclick="addExpense()">Eintragen</button>
@@ -435,156 +377,233 @@
 
 <div id="toast"></div>
 
-<script>
-  // ─── AVATARE ───────────────────────────────────────────────
+<!-- ═══════════════════════════════════════════════════════════
+     FIREBASE SDK  (über CDN – kein Build-Schritt nötig)
+     ═══════════════════════════════════════════════════════════ -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
+  import { getDatabase, ref, set, push, remove, onValue, update }
+    from "https://www.gstatic.com/firebasejs/12.16.0/firebase-database.js";
+
+  // ┌─────────────────────────────────────────────────────────┐
+  // │  ⚙️  HIER DEINEN FIREBASE CONFIG EINFÜGEN              │
+  // │  (Projekteinstellungen → Allgemein → Meine Apps → </>) │
+  // └─────────────────────────────────────────────────────────┘
+  const firebaseConfig = {
+    apiKey:            "AIzaSyAf2Y1zD9mlNkplNSIEc1K8IWmW23XdRmA",
+    authDomain:        "italy-26-c5e1c.firebaseapp.com",
+    databaseURL:       "https://italy-26-c5e1c-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId:         "italy-26-c5e1c",
+    storageBucket:     "italy-26-c5e1c.firebasestorage.app",
+    messagingSenderId: "865948395005",
+    appId:             "1:865948395005:web:db454426d9cba012d8a594"
+  };
+
+  // ─── FIREBASE INITIALISIEREN ──────────────────────────────
+  const app = initializeApp(firebaseConfig);
+  const db  = getDatabase(app);
+
+  // ─── AVATARE ──────────────────────────────────────────────
   const AVATARS = [
-    { emoji: '🦄', label: 'Einhorn' },
-    { emoji: '🐙', label: 'Oktopus' },
-    { emoji: '🦊', label: 'Fuchs' },
-    { emoji: '🐻‍❄️', label: 'Eisbär' },
-    { emoji: '🦩', label: 'Flamingo' },
-    { emoji: '🐉', label: 'Drache' },
-    { emoji: '🦋', label: 'Schmetterl.' },
-    { emoji: '🐧', label: 'Pinguin' },
-    { emoji: '🦁', label: 'Löwe' },
-    { emoji: '🐸', label: 'Frosch' },
-    { emoji: '🦀', label: 'Krabbe' },
-    { emoji: '🐺', label: 'Wolf' },
-    { emoji: '🦚', label: 'Pfau' },
-    { emoji: '🐼', label: 'Panda' },
-    { emoji: '🦝', label: 'Waschbär' },
-    { emoji: '🐳', label: 'Wal' },
-    { emoji: '🦜', label: 'Papagei' },
-    { emoji: '🐨', label: 'Koala' },
-    { emoji: '🦭', label: 'Robbe' },
-    { emoji: '🦖', label: 'Dino' },
-    { emoji: '🐬', label: 'Delphin' },
-    { emoji: '🦦', label: 'Otter' },
+    { emoji: '🦄', label: 'Einhorn' },   { emoji: '🐙', label: 'Oktopus' },
+    { emoji: '🦊', label: 'Fuchs' },     { emoji: '🐻‍❄️', label: 'Eisbär' },
+    { emoji: '🦩', label: 'Flamingo' },  { emoji: '🐉', label: 'Drache' },
+    { emoji: '🦋', label: 'Schmett.' },  { emoji: '🐧', label: 'Pinguin' },
+    { emoji: '🦁', label: 'Löwe' },      { emoji: '🐸', label: 'Frosch' },
+    { emoji: '🦀', label: 'Krabbe' },    { emoji: '🐺', label: 'Wolf' },
+    { emoji: '🦚', label: 'Pfau' },      { emoji: '🐼', label: 'Panda' },
+    { emoji: '🦝', label: 'Waschbär' },  { emoji: '🐳', label: 'Wal' },
+    { emoji: '🦜', label: 'Papagei' },   { emoji: '🐨', label: 'Koala' },
+    { emoji: '🦭', label: 'Robbe' },     { emoji: '🦖', label: 'Dino' },
+    { emoji: '🐬', label: 'Delphin' },   { emoji: '🦦', label: 'Otter' },
   ];
 
-  // ─── STATE ────────────────────────────────────────────────
-  let users = [];
-  let expenses = [];
+  // ─── STATE (wird von Firebase befüllt) ────────────────────
+  let users    = {};   // { firebaseKey: { name, avatarEmoji, avatarLabel } }
+  let expenses = {};   // { firebaseKey: { title, amount, payerId, participants, category, date } }
   let selectedAvatar = AVATARS[0];
 
-  // ─── INIT ─────────────────────────────────────────────────
-  function init() {
-    // Avatar Grid aufbauen
+  // ─── SYNC STATUS ──────────────────────────────────────────
+  function setSyncStatus(state, text) {
+    const dot  = document.getElementById('syncDot');
+    const span = document.getElementById('syncText');
+    dot.className = state;   // connected | syncing | error | ''
+    span.textContent = text;
+  }
+
+  // ─── FIREBASE LISTENERS ───────────────────────────────────
+  // Reise-Titel
+  onValue(ref(db, 'tripTitle'), snap => {
+    const t = snap.val() || '';
+    document.getElementById('tripTitle').value = t;
+    document.title = (t ? t + ' · ' : '') + 'FerienKasse 🌴';
+  });
+
+  // Personen
+  onValue(ref(db, 'users'), snap => {
+    users = snap.val() || {};
+    renderUserList();
+    renderExpenseList();
+  });
+
+  // Ausgaben
+  onValue(ref(db, 'expenses'), snap => {
+    expenses = snap.val() || {};
+    renderExpenseList();
+    if (document.getElementById('tab-abrechnung').classList.contains('active'))
+      renderSettlement();
+    // Ladescreen verstecken sobald Daten da
+    hideLoader();
+  }, err => {
+    setSyncStatus('error', 'Verbindungsfehler!');
+    hideLoader();
+  });
+
+  // Verbindungsstatus
+  onValue(ref(db, '.info/connected'), snap => {
+    if (snap.val() === true) {
+      setSyncStatus('connected', 'Live synchronisiert ✓');
+    } else {
+      setSyncStatus('error', 'Offline');
+    }
+  });
+
+  // Nach 3s auf jeden Fall Loader weg
+  setTimeout(hideLoader, 3000);
+
+  function hideLoader() {
+    const ol = document.getElementById('loadingOverlay');
+    if (!ol.classList.contains('hidden')) ol.classList.add('hidden');
+  }
+
+  // ─── TABS ─────────────────────────────────────────────────
+  window.switchTab = function(tab) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + tab).classList.add('active');
+    document.querySelectorAll('.tab-btn').forEach(b => {
+      const icons = { gruppe: '👥', ausgaben: '🧾', abrechnung: '📊' };
+      if (b.textContent.includes(icons[tab])) b.classList.add('active');
+    });
+    if (tab === 'abrechnung') renderSettlement();
+  };
+
+  // ─── REISE-TITEL ──────────────────────────────────────────
+  window.saveTripTitle = function() {
+    const t = document.getElementById('tripTitle').value;
+    document.title = (t ? t + ' · ' : '') + 'FerienKasse 🌴';
+    setSyncStatus('syncing', 'Speichert...');
+    set(ref(db, 'tripTitle'), t)
+      .then(() => setSyncStatus('connected', 'Live synchronisiert ✓'))
+      .catch(() => setSyncStatus('error', 'Fehler!'));
+  };
+
+  // ─── AVATAR GRID ──────────────────────────────────────────
+  function buildAvatarGrid() {
     const grid = document.getElementById('avatarGrid');
+    grid.innerHTML = '';
     AVATARS.forEach((av, i) => {
       const el = document.createElement('div');
       el.className = 'avatar-option' + (i === 0 ? ' selected' : '');
       el.innerHTML = `<span class="emoji">${av.emoji}</span><span class="label">${av.label}</span>`;
-      el.onclick = () => selectAvatar(i, el);
+      el.onclick = () => {
+        selectedAvatar = av;
+        document.querySelectorAll('.avatar-option').forEach(e => e.classList.remove('selected'));
+        el.classList.add('selected');
+      };
       grid.appendChild(el);
     });
+  }
 
-    // Datum vorbelegen
+  // ─── USER MANAGEMENT ──────────────────────────────────────
+  window.openAddUser = function() {
+    document.getElementById('newUserName').value = '';
+    selectedAvatar = AVATARS[0];
+    buildAvatarGrid();
+    openModal('modalUser');
+    setTimeout(() => document.getElementById('newUserName').focus(), 200);
+  };
+
+  window.addUser = function() {
+    const name = document.getElementById('newUserName').value.trim();
+    if (!name) { showToast('⚠️ Bitte einen Namen eingeben!'); return; }
+    const exists = Object.values(users).some(u => u.name.toLowerCase() === name.toLowerCase());
+    if (exists) { showToast('⚠️ Dieser Name existiert bereits!'); return; }
+
+    setSyncStatus('syncing', 'Speichert...');
+    push(ref(db, 'users'), {
+      name,
+      avatarEmoji: selectedAvatar.emoji,
+      avatarLabel: selectedAvatar.label,
+      createdAt: Date.now()
+    }).then(() => {
+      setSyncStatus('connected', 'Live synchronisiert ✓');
+      closeModal('modalUser');
+      showToast(`${selectedAvatar.emoji} ${name} ist dabei!`);
+    }).catch(() => setSyncStatus('error', 'Fehler beim Speichern!'));
+  };
+
+  window.removeUser = function(id) {
+    const user = users[id];
+    const inExpense = Object.values(expenses).some(e =>
+      e.payerId === id || (e.participants && e.participants[id])
+    );
+    if (inExpense) { showToast('⚠️ Person hat Ausgaben – erst löschen!'); return; }
+    setSyncStatus('syncing', 'Speichert...');
+    remove(ref(db, 'users/' + id))
+      .then(() => {
+        setSyncStatus('connected', 'Live synchronisiert ✓');
+        showToast(`${user?.name} wurde entfernt.`);
+      })
+      .catch(() => setSyncStatus('error', 'Fehler!'));
+  };
+
+  function renderUserList() {
+    const ul = document.getElementById('userList');
+    ul.innerHTML = '';
+    const list = Object.entries(users);
+    if (list.length === 0) {
+      ul.innerHTML = '<p style="color:var(--gray);font-size:0.85rem;margin-bottom:12px">Noch niemand dabei — füge Personen hinzu!</p>';
+      return;
+    }
+    list.forEach(([id, u]) => {
+      const chip = document.createElement('div');
+      chip.className = 'user-chip';
+      chip.innerHTML = `<span class="chip-avatar">${u.avatarEmoji}</span>${u.name}<span class="chip-delete" onclick="removeUser('${id}')" title="Entfernen">×</span>`;
+      ul.appendChild(chip);
+    });
+  }
+
+  // ─── EXPENSE MANAGEMENT ───────────────────────────────────
+  window.openAddExpense = function() {
+    if (Object.keys(users).length < 1) { showToast('⚠️ Zuerst Personen anlegen!'); return; }
+
+    const sel = document.getElementById('expPayer');
+    sel.innerHTML = Object.entries(users).map(([id, u]) =>
+      `<option value="${id}">${u.avatarEmoji} ${u.name}</option>`
+    ).join('');
+
+    buildParticipantCheckboxes();
+    document.getElementById('expTitle').value = '';
+    document.getElementById('expAmount').value = '';
+
     const today = new Date();
     document.getElementById('expDate').value =
       String(today.getDate()).padStart(2,'0') + '.' +
       String(today.getMonth()+1).padStart(2,'0') + '.' +
       today.getFullYear();
 
-    // Demo-Daten
-    users = [
-      { id: uid(), name: 'Patrik', avatar: AVATARS[5] },
-      { id: uid(), name: 'Anna', avatar: AVATARS[4] },
-      { id: uid(), name: 'Leo', avatar: AVATARS[3] },
-    ];
-    expenses = [];
-    renderAll();
-  }
-
-  function uid() { return Math.random().toString(36).slice(2, 9); }
-
-  // ─── TABS ─────────────────────────────────────────────────
-  function switchTab(tab) {
-    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    document.getElementById('tab-' + tab).classList.add('active');
-    document.querySelectorAll('.tab-btn').forEach(b => {
-      if (b.textContent.toLowerCase().includes(tab === 'gruppe' ? '👥' : tab === 'ausgaben' ? '🧾' : '📊'))
-        b.classList.add('active');
-    });
-    if (tab === 'abrechnung') renderSettlement();
-  }
-
-  // ─── USER MANAGEMENT ──────────────────────────────────────
-  function openAddUser() {
-    document.getElementById('newUserName').value = '';
-    selectedAvatar = AVATARS[0];
-    document.querySelectorAll('.avatar-option').forEach((el, i) => {
-      el.classList.toggle('selected', i === 0);
-    });
-    openModal('modalUser');
-    setTimeout(() => document.getElementById('newUserName').focus(), 200);
-  }
-
-  function selectAvatar(i, el) {
-    selectedAvatar = AVATARS[i];
-    document.querySelectorAll('.avatar-option').forEach(e => e.classList.remove('selected'));
-    el.classList.add('selected');
-  }
-
-  function addUser() {
-    const name = document.getElementById('newUserName').value.trim();
-    if (!name) { showToast('⚠️ Bitte einen Namen eingeben!'); return; }
-    if (users.find(u => u.name.toLowerCase() === name.toLowerCase())) {
-      showToast('⚠️ Dieser Name existiert bereits!'); return;
-    }
-    users.push({ id: uid(), name, avatar: selectedAvatar });
-    closeModal('modalUser');
-    renderAll();
-    showToast(`${selectedAvatar.emoji} ${name} ist dabei!`);
-  }
-
-  function removeUser(id) {
-    const user = users.find(u => u.id === id);
-    const inExpense = expenses.some(e => e.payerId === id || e.participants.includes(id));
-    if (inExpense) { showToast('⚠️ Person hat Ausgaben – erst entfernen!'); return; }
-    users = users.filter(u => u.id !== id);
-    renderAll();
-    showToast(`${user.name} wurde entfernt.`);
-  }
-
-  function renderUserList() {
-    const ul = document.getElementById('userList');
-    ul.innerHTML = '';
-    if (users.length === 0) {
-      ul.innerHTML = '<p style="color:var(--gray);font-size:0.85rem;margin-bottom:12px">Noch niemand dabei — füge Personen hinzu!</p>';
-      return;
-    }
-    users.forEach(u => {
-      const chip = document.createElement('div');
-      chip.className = 'user-chip';
-      chip.innerHTML = `<span class="chip-avatar">${u.avatar.emoji}</span>${u.name}<span class="chip-delete" onclick="removeUser('${u.id}')" title="Entfernen">×</span>`;
-      ul.appendChild(chip);
-    });
-  }
-
-  // ─── EXPENSE MANAGEMENT ───────────────────────────────────
-  function openAddExpense() {
-    if (users.length < 2) { showToast('⚠️ Mindestens 2 Personen anlegen!'); return; }
-    // Payer Dropdown befüllen
-    const sel = document.getElementById('expPayer');
-    sel.innerHTML = users.map(u => `<option value="${u.id}">${u.avatar.emoji} ${u.name}</option>`).join('');
-
-    // Participants Checkboxes
-    buildParticipantCheckboxes();
-    document.getElementById('expTitle').value = '';
-    document.getElementById('expAmount').value = '';
     openModal('modalExpense');
     setTimeout(() => document.getElementById('expTitle').focus(), 200);
-  }
+  };
 
   function buildParticipantCheckboxes() {
     const cg = document.getElementById('expParticipants');
     cg.innerHTML = '';
-    users.forEach(u => {
+    Object.entries(users).forEach(([id, u]) => {
       const item = document.createElement('label');
       item.className = 'checkbox-item checked';
-      item.innerHTML = `<input type="checkbox" value="${u.id}" checked/><span class="cb-avatar">${u.avatar.emoji}</span>${u.name}`;
+      item.innerHTML = `<input type="checkbox" value="${id}" checked/><span class="cb-avatar">${u.avatarEmoji}</span>${u.name}`;
       item.querySelector('input').addEventListener('change', e => {
         item.classList.toggle('checked', e.target.checked);
       });
@@ -592,103 +611,117 @@
     });
   }
 
-  function selectAllParticipants() {
+  window.selectAllParticipants = function() {
     document.querySelectorAll('#expParticipants input').forEach(cb => {
       cb.checked = true;
       cb.closest('.checkbox-item').classList.add('checked');
     });
-  }
+  };
 
-  function clearAllParticipants() {
+  window.clearAllParticipants = function() {
     document.querySelectorAll('#expParticipants input').forEach(cb => {
       cb.checked = false;
       cb.closest('.checkbox-item').classList.remove('checked');
     });
-  }
+  };
 
-  function addExpense() {
-    const title = document.getElementById('expTitle').value.trim();
+  window.addExpense = function() {
+    const title  = document.getElementById('expTitle').value.trim();
     const amount = parseFloat(document.getElementById('expAmount').value);
-    const payerId = document.getElementById('expPayer').value;
-    const category = document.getElementById('expCategory').value;
-    const date = document.getElementById('expDate').value;
+    const payerId   = document.getElementById('expPayer').value;
+    const category  = document.getElementById('expCategory').value;
+    const date      = document.getElementById('expDate').value;
 
-    if (!title) { showToast('⚠️ Bitte eine Beschreibung eingeben!'); return; }
-    if (!amount || amount <= 0) { showToast('⚠️ Bitte einen gültigen Betrag eingeben!'); return; }
+    if (!title)            { showToast('⚠️ Bitte eine Beschreibung eingeben!'); return; }
+    if (!amount || amount <= 0) { showToast('⚠️ Bitte einen gültigen Betrag!'); return; }
 
-    const participants = Array.from(document.querySelectorAll('#expParticipants input:checked')).map(cb => cb.value);
-    if (participants.length === 0) { showToast('⚠️ Mindestens eine Person auswählen!'); return; }
+    // Participants als Objekt {id: true} (Firebase mag keine Arrays)
+    const checkedIds = Array.from(document.querySelectorAll('#expParticipants input:checked')).map(cb => cb.value);
+    if (checkedIds.length === 0) { showToast('⚠️ Mindestens eine Person auswählen!'); return; }
+    const participants = {};
+    checkedIds.forEach(id => participants[id] = true);
 
-    expenses.push({ id: uid(), title, amount, payerId, participants, category, date });
-    closeModal('modalExpense');
-    renderAll();
-    showToast(`✅ "${title}" eingetragen!`);
-  }
+    setSyncStatus('syncing', 'Speichert...');
+    push(ref(db, 'expenses'), { title, amount, payerId, participants, category, date, createdAt: Date.now() })
+      .then(() => {
+        setSyncStatus('connected', 'Live synchronisiert ✓');
+        closeModal('modalExpense');
+        showToast(`✅ "${title}" eingetragen!`);
+      })
+      .catch(() => setSyncStatus('error', 'Fehler beim Speichern!'));
+  };
 
-  function removeExpense(id) {
-    expenses = expenses.filter(e => e.id !== id);
-    renderAll();
-    showToast('🗑️ Ausgabe gelöscht.');
-  }
+  window.removeExpense = function(id) {
+    setSyncStatus('syncing', 'Speichert...');
+    remove(ref(db, 'expenses/' + id))
+      .then(() => {
+        setSyncStatus('connected', 'Live synchronisiert ✓');
+        showToast('🗑️ Ausgabe gelöscht.');
+      })
+      .catch(() => setSyncStatus('error', 'Fehler!'));
+  };
 
   function renderExpenseList() {
     const el = document.getElementById('expenseList');
-    if (expenses.length === 0) {
+    const list = Object.entries(expenses);
+    if (list.length === 0) {
       el.innerHTML = `<div class="empty-state"><div class="es-icon">🧾</div><p>Noch keine Ausgaben.<br/>Tippe auf <strong>＋ Ausgabe eintragen</strong>!</p></div>`;
       return;
     }
-    const sorted = [...expenses].sort((a,b) => b.id.localeCompare(a.id));
-    el.innerHTML = sorted.map(exp => {
-      const payer = users.find(u => u.id === exp.payerId);
-      const parts = exp.participants.map(pid => users.find(u => u.id === pid)).filter(Boolean);
-      const perPerson = (exp.amount / exp.participants.length).toFixed(2);
+    // Neueste zuerst
+    list.sort((a,b) => (b[1].createdAt||0) - (a[1].createdAt||0));
+    el.innerHTML = list.map(([id, exp]) => {
+      const payer = users[exp.payerId];
+      const participantIds = exp.participants ? Object.keys(exp.participants) : [];
+      const count = participantIds.length || 1;
+      const perPerson = (exp.amount / count).toFixed(2);
+      const partBadges = participantIds.map(pid => {
+        const u = users[pid];
+        return u ? `<span class="participant-badge">${u.avatarEmoji} ${u.name}</span>` : '';
+      }).join('');
       return `
         <div class="expense-card">
           <div class="expense-header">
             <div>
               <div class="expense-title">${exp.category} ${exp.title}</div>
-              <div class="expense-meta">${exp.date ? exp.date + ' · ' : ''}Bezahlt von ${payer ? payer.avatar.emoji + ' ' + payer.name : '?'} · CHF ${perPerson} / Person</div>
+              <div class="expense-meta">${exp.date ? exp.date + ' · ' : ''}Bezahlt von ${payer ? payer.avatarEmoji + ' ' + payer.name : '?'} · CHF ${perPerson} / Person</div>
             </div>
             <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
-              <div class="expense-amount">CHF ${exp.amount.toFixed(2)}</div>
-              <button class="btn btn-sm" onclick="removeExpense('${exp.id}')" style="background:var(--light);color:var(--coral);padding:4px 10px;">🗑️</button>
+              <div class="expense-amount">CHF ${Number(exp.amount).toFixed(2)}</div>
+              <button class="btn btn-sm" onclick="removeExpense('${id}')" style="background:var(--light);color:var(--coral);padding:4px 10px;">🗑️</button>
             </div>
           </div>
-          <div class="expense-participants">
-            ${parts.map(p => `<span class="participant-badge">${p.avatar.emoji} ${p.name}</span>`).join('')}
-          </div>
-        </div>
-      `;
+          <div class="expense-participants">${partBadges}</div>
+        </div>`;
     }).join('');
   }
 
-  // ─── SETTLEMENT ───────────────────────────────────────────
+  // ─── ABRECHNUNG ───────────────────────────────────────────
   function calcBalances() {
-    // balances[userId] = was sie bekommen (positiv) oder schulden (negativ)
-    const paid = {};
+    const paid  = {};
     const share = {};
-    users.forEach(u => { paid[u.id] = 0; share[u.id] = 0; });
+    Object.keys(users).forEach(id => { paid[id] = 0; share[id] = 0; });
 
-    expenses.forEach(exp => {
-      if (paid[exp.payerId] !== undefined) paid[exp.payerId] += exp.amount;
-      const perPerson = exp.amount / exp.participants.length;
-      exp.participants.forEach(pid => {
+    Object.values(expenses).forEach(exp => {
+      if (paid[exp.payerId] !== undefined) paid[exp.payerId] += Number(exp.amount);
+      const participantIds = exp.participants ? Object.keys(exp.participants) : [];
+      const perPerson = Number(exp.amount) / (participantIds.length || 1);
+      participantIds.forEach(pid => {
         if (share[pid] !== undefined) share[pid] += perPerson;
       });
     });
 
     const balances = {};
-    users.forEach(u => { balances[u.id] = paid[u.id] - share[u.id]; });
+    Object.keys(users).forEach(id => { balances[id] = paid[id] - share[id]; });
     return { balances, paid, share };
   }
 
   function calcSettlements(balances) {
-    // Schulden minimieren mit Greedy
     const pos = [], neg = [];
-    users.forEach(u => {
-      const b = balances[u.id];
-      if (b > 0.005) pos.push({ id: u.id, amt: b });
-      else if (b < -0.005) neg.push({ id: u.id, amt: -b });
+    Object.keys(users).forEach(id => {
+      const b = balances[id];
+      if (b > 0.005) pos.push({ id, amt: b });
+      else if (b < -0.005) neg.push({ id, amt: -b });
     });
     pos.sort((a,b) => b.amt - a.amt);
     neg.sort((a,b) => b.amt - a.amt);
@@ -708,39 +741,39 @@
 
   function renderSettlement() {
     const el = document.getElementById('settlementContent');
+    const userList = Object.entries(users);
+    const expList  = Object.values(expenses);
 
-    if (users.length === 0 || expenses.length === 0) {
+    if (userList.length === 0 || expList.length === 0) {
       el.innerHTML = `<div class="empty-state"><div class="es-icon">📊</div><p>Trage zuerst Personen und Ausgaben ein.</p></div>`;
       return;
     }
 
     const { balances, paid, share } = calcBalances();
     const transactions = calcSettlements(balances);
-    const totalSpent = expenses.reduce((s, e) => s + e.amount, 0);
-    const avgPerPerson = totalSpent / users.length;
+    const totalSpent  = expList.reduce((s, e) => s + Number(e.amount), 0);
+    const avgPerPerson = totalSpent / userList.length;
 
-    // Statistiken
     let html = `<div class="card">
       <div class="stat-row"><span class="stat-label">💰 Gesamtausgaben</span><span class="stat-value">CHF ${totalSpent.toFixed(2)}</span></div>
-      <div class="stat-row"><span class="stat-label">👥 Personen</span><span class="stat-value">${users.length}</span></div>
-      <div class="stat-row"><span class="stat-label">📋 Anzahl Ausgaben</span><span class="stat-value">${expenses.length}</span></div>
-      <div class="stat-row"><span class="stat-label">⚖️ Gleicher Anteil pro Person</span><span class="stat-value">CHF ${avgPerPerson.toFixed(2)}</span></div>
+      <div class="stat-row"><span class="stat-label">👥 Personen</span><span class="stat-value">${userList.length}</span></div>
+      <div class="stat-row"><span class="stat-label">📋 Ausgaben</span><span class="stat-value">${expList.length}</span></div>
+      <div class="stat-row"><span class="stat-label">⚖️ Gleicher Anteil / Person</span><span class="stat-value">CHF ${avgPerPerson.toFixed(2)}</span></div>
     </div>`;
 
-    // Personen-Bilanzen
     html += `<h3 style="font-weight:700;margin:20px 0 10px;font-size:1rem;">📋 Personen-Bilanz</h3><div class="card">`;
-    users.forEach(u => {
-      const b = balances[u.id];
+    const maxP = Math.max(...userList.map(([id]) => paid[id]), 1);
+    userList.forEach(([id, u]) => {
+      const b   = balances[id];
       const cls = b > 0.005 ? 'pb-pos' : b < -0.005 ? 'pb-neg' : 'pb-zero';
       const sign = b > 0.005 ? '+' : '';
-      const maxPaid = Math.max(...users.map(u2 => paid[u2.id]), 1);
-      const pct = Math.min((paid[u.id] / maxPaid) * 100, 100);
+      const pct = Math.min((paid[id] / maxP) * 100, 100);
       html += `<div class="person-balance">
-        <div class="pb-name"><span class="pb-avatar">${u.avatar.emoji}</span>${u.name}</div>
+        <div class="pb-name"><span class="pb-avatar">${u.avatarEmoji}</span>${u.name}</div>
         <div style="flex:1;margin:0 12px">
-          <div class="pb-paid">Bezahlt: CHF ${paid[u.id].toFixed(2)} · Anteil: CHF ${share[u.id].toFixed(2)}</div>
+          <div class="pb-paid">Bezahlt: CHF ${paid[id].toFixed(2)} · Anteil: CHF ${share[id].toFixed(2)}</div>
           <div class="balance-bar-wrap">
-            <div class="balance-bar-bg"><div class="balance-bar-fill" style="width:${pct}%;background:${b > 0 ? 'var(--green)' : b < 0 ? 'var(--coral)' : 'var(--gray)'}"></div></div>
+            <div class="balance-bar-bg"><div class="balance-bar-fill" style="width:${pct}%;background:${b>0?'var(--green)':b<0?'var(--coral)':'var(--gray)'}"></div></div>
           </div>
         </div>
         <div class="pb-balance ${cls}">${sign}CHF ${Math.abs(b).toFixed(2)}</div>
@@ -748,45 +781,29 @@
     });
     html += '</div>';
 
-    // Überweisungen
     html += `<h3 style="font-weight:700;margin:20px 0 10px;font-size:1rem;">💸 Wer zahlt wem?</h3>`;
     if (transactions.length === 0) {
       html += `<div class="card" style="text-align:center;color:var(--gray)">🎉 Alles ausgeglichen! Niemand schuldet etwas.</div>`;
     } else {
       transactions.forEach(t => {
-        const from = users.find(u => u.id === t.from);
-        const to = users.find(u => u.id === t.to);
+        const from = users[t.from];
+        const to   = users[t.to];
         if (!from || !to) return;
         html += `<div class="settlement-card">
-          <span style="font-size:1.5rem">${from.avatar.emoji}</span>
-          <div>
-            <div class="settlement-names"><strong>${from.name}</strong> <span>zahlt an</span> <strong>${to.name}</strong></div>
-          </div>
-          <span style="font-size:1.5rem">${to.avatar.emoji}</span>
+          <span style="font-size:1.5rem">${from.avatarEmoji}</span>
+          <div><div class="settlement-names"><strong>${from.name}</strong> <span>zahlt an</span> <strong>${to.name}</strong></div></div>
+          <span style="font-size:1.5rem">${to.avatarEmoji}</span>
           <div class="s-amount">CHF ${t.amount.toFixed(2)}</div>
         </div>`;
       });
     }
-
     el.innerHTML = html;
   }
 
-  // ─── RENDER ALL ───────────────────────────────────────────
-  function renderAll() {
-    renderUserList();
-    renderExpenseList();
-  }
-
   // ─── HELPERS ──────────────────────────────────────────────
-  function updateTripTitle() {
-    const t = document.getElementById('tripTitle').value;
-    document.title = (t ? t + ' · ' : '') + 'FerienKasse 🌴';
-  }
+  window.openModal  = id => document.getElementById(id).classList.add('open');
+  window.closeModal = id => document.getElementById(id).classList.remove('open');
 
-  function openModal(id) { document.getElementById(id).classList.add('open'); }
-  function closeModal(id) { document.getElementById(id).classList.remove('open'); }
-
-  // Modals schliessen bei Klick aufs Overlay
   document.querySelectorAll('.modal-overlay').forEach(overlay => {
     overlay.addEventListener('click', e => {
       if (e.target === overlay) overlay.classList.remove('open');
@@ -794,15 +811,17 @@
   });
 
   let toastTimer;
-  function showToast(msg) {
+  window.showToast = function(msg) {
     const t = document.getElementById('toast');
     t.textContent = msg;
     t.classList.add('show');
     clearTimeout(toastTimer);
     toastTimer = setTimeout(() => t.classList.remove('show'), 2800);
-  }
+  };
 
-  init();
+  // renderSettlement global machen
+  window.renderSettlement = renderSettlement;
+
 </script>
 </body>
 </html>
